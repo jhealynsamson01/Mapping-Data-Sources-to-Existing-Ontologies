@@ -1,0 +1,1395 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="https://saref.etsi.org/core/"
+         xmlns:term="http://purl.org/dc/terms/"
+         xmlns:vann="http://purl.org/vocab/vann/"
+         xmlns="https://saref.etsi.org/core/">
+
+<owl:Ontology rdf:about="https://saref.etsi.org/core">
+  <term:creator rdf:resource="http://maxime-lefrancois.info/me#"/>
+  <term:source rdf:resource="https://saref.etsi.org/sources/saref-core"/>
+  <term:creator rdf:resource="https://w3id.org/people/mpoveda"/>
+  <term:creator rdf:resource="http://www.garcia-castro.com/foaf.rdf#me"/>
+  <rdfs:seeAlso rdf:resource="https://www.etsi.org/deliver/etsi_ts/103200_103299/103264/03.01.01_60/ts_103264v030101p.pdf"/>
+  <term:creator rdf:resource="https://www.linkedin.com/in/lauradaniele"/>
+  <term:publisher rdf:resource="https://www.etsi.org"/>
+  <term:license rdf:resource="https://forge.etsi.org/etsi-software-license"/>
+  <owl:versionIRI rdf:resource="v3.1.1"/>
+  <vann:preferredNamespaceUri>https://saref.etsi.org/core/</vann:preferredNamespaceUri>
+  <term:title xml:lang="en">SAREF: the Smart Applications REFerence ontology</term:title>
+  <vann:preferredNamespacePrefix>saref</vann:preferredNamespacePrefix>
+  <term:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2020-05-29</term:modified>
+  <owl:versionInfo>v3.1.1</owl:versionInfo>
+  <term:description xml:lang="en">The Smart Applications REFerence ontology (SAREF) is intended to enable interoperability between solutions from different providers and among various activity sectors in the Internet of Things (IoT), thus contributing to the development of the global digital market.</term:description>
+  <rdfs:comment>Information about changes compared to version 1.1.1:
+ - The classes and properties related to how to represent devices in building spaces (such as the saref:BuildingSpace class,  saref:BuildingObject class and saref:isLocatedIn property) have been removed from SAREF and incorporated  into the SAREF4BLDG extension related to buildings, including the reuse of the W3C? WGS84 geo positioning vocabulary.
+ - The saref:DeviceCategory and saref:FunctionCategory classes have been removed. Instead, the hierarchy of device categories has been implemented directly as subclasses of the saref:Device class.
+ - The information specific for energy efficiency has been moved to the SAREF4ENER extension. For example, the saref:Profile class has been redefined to accommodate only the properties that are general enough for any type of profile, not only for energy and power. Details on how to specifically model a power profile can be found in the SAREF4ENER extension. 
+ - The subclasses of the saref:Energy class  have been removed (i.e., Average Energy, Maximum Energy, Minimum Energy, Total Energy, HVAC Energy, Hot Water Energy and Lighting Energy).
+ - The saref:Property class has been split into two classes (saref:Property and saref:Measurement), as it is done in the SAREF4ENVI extension, in order to properly accommodate the distinction between the concept of property (an observable quality of something) and the concept of measurement (a concrete value observed for a property).
+ - Too restrictive cardinality restrictions have been revised, sometimes making them optional rather than mandatory (better to make properties mandatory in the extensions that specialize SAREF for a specific purpose, rather than restricting SAREF, whose purpose is more general). For example, definitions of units of measurement using an enumeration (owl:oneOf) were too restrictive because they did not allow using other units than those enumerated. Therefore, the individuals of each class are still there, but the owl:oneOf enumeration has been removed.
+ - The saref:UnitOfMeasure subclasses use individuals from the OM ontology for unit of measures, but this is not the only solution. It has been clarified in the comments that the OM ontology is an example, but other ontologies can be used.
+ - The global restrictions (rdfs:domain and rdfs:range) in object properties have been completely removed not to hinder interoperability. Object properties are now only restricted locally in the classes. 
+ - The subclasses of saref:Task have been transormed in individuals.
+ - The saref:hasTask property has been removed from the saref:Profile class to resolve an ambiguity with the saref:Task class.</rdfs:comment>
+  <rdfs:comment>Information about changes compared to version 2.1.1: 
+ - Added the saref:FeatureOfInterest class and the properties used to relate it to saref:Measurement (saref:hasMeasurement and saref:isMeasurementOf) and to saref:Property (saref:hasProperty and saref:isPropertyOf).
+ - Added the saref:measurementMadeBy property as inverse of saref:makesMeasurement.
+ - The saref:relatesToProperty and saref:relatesToMeasurement properties are now inverse of each other.
+ - The range of saref:hasValue, which was defined as xsd:float, has been removed to support other datatypes for measurements.
+ - The range of datatype properties, which was defined as xsd:string, has been removed in order to support strings with language tags (rdf:langString). This affects saref:hasDescription, saref:hasManufacturer, saref:hasModel and saref:hasName, which now have implicitly a range of rdfs:Literal.
+ - The saref:hasName property has been removed and the use of rdfs:label is recommended. 
+ - The saref:hasDescription property has been deprecated and the use of rdfs:comment is recommended. 
+ - Too restrictive restrictions have been removed and in some cases the ontology documentation has been updated to reflect this: a saref:Command having at most one saref:hasDescription; a saref:Task being accomplished by at least one saref:Device; a saref:Device having a typical consumption of only energy or power; a saref:Commodity being measured in units of measure; restrictions on the values of saref:accomplishes that only covered specific use cases; universal restrictions on the saref:actsUpon property have been changed to existential ones; restrictions on the commands that a saref:Function may have, since there could be others not included in the defined enumerations; restrictive documentation of saref:EventFunction and saref:SmokeSensor.
+ - Bugs have been fixed: some devices (saref:DoorSwitch, saref:EnergyMeter, saref:LigthSwitch, saref:SmokeSensor, and saref:TemperatureSensor) were defined as subclass of a device and at the same time as consisting of such device; a saref:LightSwitch controls light and does not measure light, since it is an actuator; incorrect documentation of saref:OnState and saref:OffState.
+ - The saref:BuildingRelated, saref:EnergyRelated and saref:FunctionRelated classes have been removed, since the different extensions already classify the device types.
+ - The instances of the subclasses of saref:Command have been removed, since they represent examples.
+ - The instances of saref:UnitOfMeasure have been moved to examples.
+ - The classes related to the SAREF4ENER extension have been removed: saref:Generator, saref:Storage, saref:Load and saref:EnergyMeter.
+ - Some instances of saref:Device have been moved to examples: saref:WashingMachine, saref:LightingDevice, saref:MicroRenewable, saref:Multimedia, and saref:Network.
+ - Added domain and range axioms wherever the definition of a property unambiguously identifies the domain or the range of the property.
+ - The OWL Time ontology is not imported anymore.
+ - The documentation of some ontology terms has been updated for clarification.
+ - Language tags have been added to all labels and comments.
+</rdfs:comment>
+  <term:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2020-02-11</term:issued>
+</owl:Ontology>
+
+<owl:ObjectProperty rdf:about="relatesToMeasurement">
+  <rdfs:range rdf:resource="Measurement"/>
+  <rdfs:domain rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">relates to measurement</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a property and the measurements it relates to</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isPropertyOf">
+  <rdfs:range rdf:resource="FeatureOfInterest"/>
+  <rdfs:domain rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">is property of</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a property and the feature of interest it belongs to</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isMeasuredByDevice">
+  <rdfs:range rdf:resource="Device"/>
+  <rdfs:domain rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">is measured by device</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship specifying the devices that can measure a certain property</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isControlledByDevice">
+  <rdfs:range rdf:resource="Device"/>
+  <rdfs:domain rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">is controlled by device</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship specifying the devices that can control a certain property</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isAbout">
+  <rdfs:label xml:lang="en">isAbout</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying what an entity, such as a profile, is about</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasTime">
+  <rdfs:range rdf:resource="Time"/>
+  <rdfs:label xml:lang="en">has time</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship to associate time information to an entity</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasPrice">
+  <rdfs:range rdf:resource="Price"/>
+  <rdfs:label xml:lang="en">has price</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship indentifying the price associated to an entity</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="consistsOf">
+  <rdfs:label xml:lang="en">consists of</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship indicating a composite entity that consists of other entities (e.g., a temperature/humidity sensor that consists of a temperature sensor and a humidity sensor)</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isCommandOf">
+  <rdfs:range rdf:resource="Function"/>
+  <rdfs:domain rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">is command of</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a command and a function.</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="measuresProperty">
+  <rdfs:range rdf:resource="Property"/>
+  <rdfs:domain rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">measures property</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship specifying the property that can be measured by a certain device</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasFunction">
+  <rdfs:range rdf:resource="Function"/>
+  <rdfs:domain rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">has function</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying the function of a device</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasMeterReadingType">
+  <rdfs:range rdf:resource="Property"/>
+  <rdfs:domain rdf:resource="MeteringFunction"/>
+  <rdfs:label xml:lang="en">has meter reading type</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying the reading type of a metering function (e.g., Water, Gas, Pressure , Energy , Power, etc.)</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasMeterReading">
+  <rdfs:range rdf:resource="Measurement"/>
+  <rdfs:domain rdf:resource="MeteringFunction"/>
+  <rdfs:label xml:lang="en">has meter reading</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a metering function and the measurement of the reading</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="offers">
+  <rdfs:range rdf:resource="Service"/>
+  <rdfs:domain rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">offers</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a device and a service</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="controlsProperty">
+  <rdfs:range rdf:resource="Property"/>
+  <rdfs:domain rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">controls property</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship specifying the property that can be controlled by a certain device</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasState">
+  <rdfs:range rdf:resource="State"/>
+  <rdfs:domain rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">has state</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying the type of state of a device</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasThresholdMeasurement">
+  <rdfs:range rdf:resource="Measurement"/>
+  <rdfs:domain rdf:resource="EventFunction"/>
+  <rdfs:label xml:lang="en">has threshold measurement</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship associated with an event function to notify that a certain threshold measurement has been exceeded</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="relatesToProperty">
+  <rdfs:range rdf:resource="Property"/>
+  <rdfs:domain rdf:resource="Measurement"/>
+  <owl:inverseOf rdf:resource="relatesToMeasurement"/>
+  <rdfs:label xml:lang="en">relates to property</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a measurement and the property it relates to</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isMeasuredIn">
+  <rdfs:range rdf:resource="UnitOfMeasure"/>
+  <rdfs:domain rdf:resource="Measurement"/>
+  <rdfs:label xml:lang="en">is measured in</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying the unit of measure used for a certain entity.</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isMeasurementOf">
+  <rdfs:range rdf:resource="FeatureOfInterest"/>
+  <rdfs:domain rdf:resource="Measurement"/>
+  <owl:inverseOf rdf:resource="hasMeasurement"/>
+  <rdfs:label xml:lang="en">isMeasurementOf</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a measurement and the feature of interest whose quality was measured</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="actsUpon">
+  <rdfs:range rdf:resource="State"/>
+  <rdfs:domain rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">acts upon</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a command and a state</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasMeasurement">
+  <rdfs:range rdf:resource="Measurement"/>
+  <rdfs:domain rdf:resource="FeatureOfInterest"/>
+  <rdfs:label xml:lang="en">has measurement</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a feature of interest and a measurement about it</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasProperty">
+  <rdfs:range rdf:resource="Property"/>
+  <rdfs:domain rdf:resource="FeatureOfInterest"/>
+  <owl:inverseOf rdf:resource="isPropertyOf"/>
+  <rdfs:label xml:lang="en">has property</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a feature of interest and a property of that feature</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="represents">
+  <rdfs:range rdf:resource="Function"/>
+  <rdfs:domain rdf:resource="Service"/>
+  <rdfs:label xml:lang="en">represents</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a service and a function.</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isOfferedBy">
+  <rdfs:range rdf:resource="Device"/>
+  <rdfs:domain rdf:resource="Service"/>
+  <owl:inverseOf rdf:resource="offers"/>
+  <rdfs:label xml:lang="en">is offered by</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a service and a device that offers the service</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasSensorType">
+  <rdfs:range rdf:resource="Property"/>
+  <rdfs:domain rdf:resource="SensingFunction"/>
+  <rdfs:label xml:lang="en">has sensor type</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying the sensing type of a sensor detection (i.e., Temperature, Occupancy, Humidity, Motion , Smoke, Pressure, etc.) </rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasSensingRange">
+  <rdfs:range rdf:resource="Measurement"/>
+  <rdfs:domain rdf:resource="SensingFunction"/>
+  <rdfs:label xml:lang="en">has sensing range</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a sensing function and a measurement identifying the range of a sensor detection</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="accomplishes">
+  <rdfs:range rdf:resource="Task"/>
+  <owl:inverseOf rdf:resource="isAccomplishedBy"/>
+  <rdfs:label xml:lang="en">accomplishes</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a certain entity (e.g., a device) and the task it accomplishes</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isUsedFor">
+  <rdfs:label xml:lang="en">is used for</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship specifying the commodity for which a device is used for</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasProfile">
+  <rdfs:range rdf:resource="Profile"/>
+  <rdfs:domain rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">has profile</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship associating a profile to a certain device</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="makesMeasurement">
+  <rdfs:range rdf:resource="Measurement"/>
+  <rdfs:domain rdf:resource="Device"/>
+  <owl:inverseOf rdf:resource="measurementMadeBy"/>
+  <rdfs:label xml:lang="en">makes measurement</rdfs:label>
+  <rdfs:comment xml:lang="en">A relation between a device and the measurements it makes. Such measurement will link together the value of the measurement, its unit of measure and the property to which it relates.</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasCommand">
+  <rdfs:range rdf:resource="Command"/>
+  <rdfs:domain rdf:resource="Function"/>
+  <owl:inverseOf rdf:resource="isCommandOf"/>
+  <rdfs:label xml:lang="en">has command</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship between a function and a command</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="isAccomplishedBy">
+  <rdfs:domain rdf:resource="Task"/>
+  <rdfs:label xml:lang="en">is accomplished by</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying an entity (e.g., a device) that can accomplish a task.</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="hasTypicalConsumption">
+  <rdfs:label xml:lang="en">has typical consumption</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying the typical (energy or power) consumption of a device</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="measurementMadeBy">
+  <rdfs:range rdf:resource="Device"/>
+  <rdfs:domain rdf:resource="Measurement"/>
+  <rdfs:label xml:lang="en">measurement made by</rdfs:label>
+  <rdfs:comment xml:lang="en">A relation between a measurement and the device that made it.</rdfs:comment>
+</owl:ObjectProperty>
+
+<owl:DatatypeProperty rdf:about="hasTimestamp">
+  <rdfs:label xml:lang="en">has timestamp</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship stating the timestamp of an entity (e.g. a measurement).</rdfs:comment>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="hasValue">
+  <rdfs:label xml:lang="en">has value</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship defining the value of a certain property, e.g., energy or power. Note that, even if numeric values are expected to enable reasoning, measurement values could use other datatypes.</rdfs:comment>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="hasManufacturer">
+  <rdfs:label xml:lang="en">has manufacturer</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying the manufacturer of an entity (e.g., device). The value is expected to be a string or a string with language tag.</rdfs:comment>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="hasModel">
+  <rdfs:label xml:lang="en">has model</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship identifying the model of an entity (e.g., device). The value is expected to be a string or a string with language tag.</rdfs:comment>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="hasDescription">
+  <rdfs:label xml:lang="en">has description</rdfs:label>
+  <rdfs:comment xml:lang="en">A relationship providing a description of an entity (e.g., device). The value is expected to be a string or a string with language tag.</rdfs:comment>
+  <rdfs:comment xml:lang="en">DEPRECATED: The use of rdfs:comment is recommended instead.</rdfs:comment>
+  <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+</owl:DatatypeProperty>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/vocab/vann/preferredNamespaceUri"/>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/creator"/>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/source"/>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/title"/>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/vocab/vann/preferredNamespacePrefix"/>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/modified"/>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/publisher"/>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/license"/>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/description"/>
+
+<owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/issued"/>
+
+<owl:Class rdf:about="CloseState">
+  <rdfs:subClassOf rdf:resource="OpenCloseState"/>
+  <rdfs:label xml:lang="en">Close state</rdfs:label>
+  <rdfs:comment xml:lang="en">The state of a device that is CLOSE</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OpenCloseState">
+  <rdfs:subClassOf rdf:resource="State"/>
+  <rdfs:label xml:lang="en">Open close state</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of state</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Property">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Measurement"/>
+      <owl:onProperty rdf:resource="relatesToMeasurement"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="FeatureOfInterest"/>
+      <owl:onProperty rdf:resource="isPropertyOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Device"/>
+      <owl:onProperty rdf:resource="isMeasuredByDevice"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Device"/>
+      <owl:onProperty rdf:resource="isControlledByDevice"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:label xml:lang="en">Property</rdfs:label>
+  <rdfs:comment xml:lang="en">A quality of a feature of interest that can be measured; an aspect of a feature of interest that is intrinsic to and cannot exist without the feature</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Measurement">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onClass rdf:resource="Property"/>
+      <owl:onProperty rdf:resource="relatesToProperty"/>
+      <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+      <owl:onProperty rdf:resource="hasTimestamp"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Property"/>
+      <owl:onProperty rdf:resource="relatesToProperty"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="UnitOfMeasure"/>
+      <owl:onProperty rdf:resource="isMeasuredIn"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onClass rdf:resource="UnitOfMeasure"/>
+      <owl:onProperty rdf:resource="isMeasuredIn"/>
+      <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="FeatureOfInterest"/>
+      <owl:onProperty rdf:resource="isMeasurementOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="hasValue"/>
+      <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:comment xml:lang="en">Represents the measured value made over a property. It is also linked to the unit of measure in which the value is expressed and the timestamp of the measurement.</rdfs:comment>
+  <rdfs:label xml:lang="en">Measurement</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="FeatureOfInterest">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Measurement"/>
+      <owl:onProperty rdf:resource="hasMeasurement"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Property"/>
+      <owl:onProperty rdf:resource="hasProperty"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:label xml:lang="en">Feature of interest</rdfs:label>
+  <rdfs:comment xml:lang="en">A feature of interest represents any real world entity from which a property is measured.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Device">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="State"/>
+      <owl:onProperty rdf:resource="hasState"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Property"/>
+      <owl:onProperty rdf:resource="measuresProperty"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Property"/>
+      <owl:onProperty rdf:resource="controlsProperty"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onClass rdf:resource="Task"/>
+      <owl:onProperty rdf:resource="accomplishes"/>
+      <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Commodity"/>
+      <owl:onProperty rdf:resource="isUsedFor"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Service"/>
+      <owl:onProperty rdf:resource="offers"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="hasManufacturer"/>
+      <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="hasModel"/>
+      <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Profile"/>
+      <owl:onProperty rdf:resource="hasProfile"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Device"/>
+      <owl:onProperty rdf:resource="consistsOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Measurement"/>
+      <owl:onProperty rdf:resource="makesMeasurement"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onClass rdf:resource="Function"/>
+      <owl:onProperty rdf:resource="hasFunction"/>
+      <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:comment xml:lang="en">A tangible object designed to accomplish a particular task. In order to accomplish this task, the device performs one or more functions. For example, a washing machine is designed to wash (task) and to accomplish this task it performs a start and stop function.</rdfs:comment>
+  <rdfs:label xml:lang="en">Device</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="StopState">
+  <rdfs:subClassOf rdf:resource="StartStopState"/>
+  <rdfs:label xml:lang="en">Stop state</rdfs:label>
+  <rdfs:comment xml:lang="en">The state of a device that is STOPPED</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="StartStopState">
+  <rdfs:subClassOf rdf:resource="State"/>
+  <rdfs:label xml:lang="en">Start stop state</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of state</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Power">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Power</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property related to some measurements that are characterized by a certain value that is measured in a power unit (such as watt or kilowatt).  Further specializations of the saref:Power class can be found in the SAREF4ENER extension, where classes such as PowerMax, PowerMin and PowerExpected are defined.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Water">
+  <rdfs:subClassOf rdf:resource="Commodity"/>
+  <rdfs:label xml:lang="en">Water</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of commodity</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Commodity">
+  <rdfs:label xml:lang="en">Commodity</rdfs:label>
+  <rdfs:comment xml:lang="en">A marketable item for which there is demand, but which is supplied without qualitative differentiation across a market. SAREF refers to energy commodities such as electricity, gas, coal and oil. </rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="ActuatingFunction">
+  <rdfs:subClassOf rdf:resource="Function"/>
+  <rdfs:label xml:lang="en">Actuating function</rdfs:label>
+  <rdfs:comment xml:lang="en">A function that allows to transmit data to actuators, such as level settings (e.g., temperature) or binary switching (e.g., open/close, on/off)</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Function">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onClass rdf:resource="Command"/>
+      <owl:onProperty rdf:resource="hasCommand"/>
+      <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:label xml:lang="en">Function</rdfs:label>
+  <rdfs:comment xml:lang="en">The functionality necessary to accomplish the task for which a device is designed. A device can be designed to perform more than one function. Functions can be structured in categories (subclasses) that reflect different points of view, for example, considering the specific application area for which a function can be used (e.g., light, temperature, motion, heat, power, etc.), or the capability that a function can support (e.g., receive, reply, notify, etc.), and so forth. </rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Currency">
+  <rdfs:subClassOf rdf:resource="UnitOfMeasure"/>
+  <rdfs:label xml:lang="en">Currency</rdfs:label>
+  <rdfs:comment xml:lang="en">The class of units of measure for price</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="UnitOfMeasure">
+  <rdfs:label xml:lang="en">Unit of measure</rdfs:label>
+  <rdfs:comment xml:lang="en">The unit of measure is a standard for measurement of a quantity, such as a Property. For example,  Power is a property and Watt is a unit of power that represents a definite predetermined power: when we say 10 Watt, we actually mean 10 times the definite predetermined power called "watt". Our definition is based on the definition of unit of measure in the Ontology of units of Measure (OM). We propose here a list of some units of measure that are relevant for the purpose of SAREF, but this list can be extended, also using some other ontologies rather than the Ontology of units of Measure (OM).</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="MultiLevelState">
+  <rdfs:subClassOf rdf:resource="State"/>
+  <rdfs:label xml:lang="en">Multi level state</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of state</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="State">
+  <rdfs:label xml:lang="en">State</rdfs:label>
+  <rdfs:comment xml:lang="en">The state in which a device can be found, e.g, ON/OFF/STANDBY, or ONLINE/OFFLINE. We propose here a list of states that are relevant for the purpose of SAREF, but this list can be extended.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Profile">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom>
+        <owl:Class>
+          <owl:unionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="Commodity"/>
+            <rdf:Description rdf:about="Property"/>
+          </owl:unionOf>
+        </owl:Class>
+      </owl:allValuesFrom>
+      <owl:onProperty rdf:resource="isAbout"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Time"/>
+      <owl:onProperty rdf:resource="hasTime"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Price"/>
+      <owl:onProperty rdf:resource="hasPrice"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Profile"/>
+      <owl:onProperty rdf:resource="consistsOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:label xml:lang="en">Profile</rdfs:label>
+  <rdfs:comment xml:lang="en">A specification associated to a device to collect information about a certain Property (e.g., Energy) for optimizing its usage in the home, office or building in which the device is located. This specification is about a certain Property (saref:isAbout), can be calculated over a time span (saref:hasTime) and can be associated to some costs (saref:hasPrice). An example is the Power Profile defined in the SAREF4ENER extension that can be associated to a device for optimizing the Energy efficiency in the home, office or building in which the device is located.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Time">
+  <rdfs:label xml:lang="en">Time</rdfs:label>
+  <rdfs:comment xml:lang="en">A class that allows to specify the time concept.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Price">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Price</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property crelated to some measurements that are characterized by a certain value that is measured using saref:Currency</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="ToggleCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="OnOffFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Toggle command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OnOffFunction">
+  <rdfs:subClassOf rdf:resource="ActuatingFunction"/>
+  <rdfs:label xml:lang="en">On off function</rdfs:label>
+  <rdfs:comment xml:lang="en">An actuating function that allows to switch on and off an actuator</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Command">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onClass rdf:resource="Function"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+      <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="State"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:label xml:lang="en">Command</rdfs:label>
+  <rdfs:comment xml:lang="en">A directive that a device must support to perform a certain function. A command may act upon a state, but does not necessarily act upon a state. For example, the ON command acts upon the ON/OFF state, but the GET command does not act upon any state, it simply gives a directive to retrieve a certain value. We propose here a list of commands that are relevant for the purpose of SAREF, but this list can be extended.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Gas">
+  <rdfs:subClassOf rdf:resource="Commodity"/>
+  <rdfs:label xml:lang="en">Gas</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of commodity</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="EnergyUnit">
+  <rdfs:subClassOf rdf:resource="UnitOfMeasure"/>
+  <rdfs:label xml:lang="en">Energy unit</rdfs:label>
+  <rdfs:comment xml:lang="en">The unit of measure for energy</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Electricity">
+  <rdfs:subClassOf rdf:resource="Commodity"/>
+  <rdfs:label xml:lang="en">Electricity</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of commodity</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="SmokeSensor">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="Smoke"/>
+      <owl:onProperty rdf:resource="measuresProperty"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="SensingFunction"/>
+      <owl:onProperty rdf:resource="hasFunction"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="EventFunction"/>
+      <owl:onProperty rdf:resource="hasFunction"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Sensor"/>
+  <rdfs:label xml:lang="en">Smoke sensor</rdfs:label>
+  <rdfs:comment xml:lang="en">A sensor that performs the saref:SensingFunction and the saref:EventFunction, and is used for the purpose of sensing a property of type saref:Smoke. A saref:SmokeSensor is typically used to saref:accomplish saref:Safety.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Smoke">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Smoke</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property related to some measurements that are characterized by a certain value that is measured in a unit of measure for smoke</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="SensingFunction">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Property"/>
+      <owl:onProperty rdf:resource="hasSensorType"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="Measurement"/>
+      <owl:onProperty rdf:resource="hasSensingRange"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Function"/>
+  <rdfs:label xml:lang="en">Sensing function</rdfs:label>
+  <rdfs:comment xml:lang="en">A function that allows to transmit data from sensors, such as measurement values (e.g., temperature) or sensing data (e.g., occupancy)</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="EventFunction">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onClass rdf:resource="Measurement"/>
+      <owl:onProperty rdf:resource="hasThresholdMeasurement"/>
+      <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Function"/>
+  <rdfs:label xml:lang="en">Event function</rdfs:label>
+  <rdfs:comment xml:lang="en">A function that allows to notify about some relevant activity; e.g., that a certain threshold value has been exceeded or that some object has moved.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Sensor">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="SensingFunction"/>
+      <owl:onProperty rdf:resource="hasFunction"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">Sensor</rdfs:label>
+  <rdfs:comment xml:lang="en">A device that detects and responds to events or changes in the physical environment such as light, motion, or temperature changes. Further, a device of category saref:Sensor that performs a saref:SensingFunction.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="GetSensingDataCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="SensingFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="GetCommand"/>
+  <rdfs:label xml:lang="en">Get sensing data command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of get command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="GetCommand">
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Get command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="LevelControlFunction">
+  <rdfs:subClassOf rdf:resource="ActuatingFunction"/>
+  <rdfs:label xml:lang="en">Level control function</rdfs:label>
+  <rdfs:comment xml:lang="en">An actuating function that allows to do level adjustments of a property in a certain range (e.g., 0%-100%), such as dimming a light in a room or setting the speed of an electric motor. </rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="IlluminanceUnit">
+  <rdfs:subClassOf rdf:resource="UnitOfMeasure"/>
+  <rdfs:label xml:lang="en">Illuminance unit</rdfs:label>
+  <rdfs:comment xml:lang="en">The unit of measure for light</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Occupancy">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Occupancy</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property related to some measurements that are characterized by a certain value (saref:hasValue property) that is measured in a unit of measure for occupancy</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Energy">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Energy</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property related to some measurements that are characterized by a certain value measured in an energy unit (such as Kilowatt_Hour or Watt_hour). Furter specializations of the saref:Energy class can be found in the SAREF4ENER extension, where classes such as EnergyMax, EnergyMin and EnergyExpected are defined. </rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Switch">
+  <rdfs:subClassOf rdf:resource="Actuator"/>
+  <rdfs:label xml:lang="en">Switch</rdfs:label>
+  <rdfs:comment xml:lang="en">A device of category saref:Actuator that performs an actuating function of type saref:OnOffFunction or saref:OpenCloseFunction</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Actuator">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="ActuatingFunction"/>
+      <owl:onProperty rdf:resource="hasFunction"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">Actuator</rdfs:label>
+  <rdfs:comment xml:lang="en">A device responsible for moving or controlling a mechanism or system by performing an actuating function</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="MeteringFunction">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom>
+        <owl:Class>
+          <owl:unionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="Commodity"/>
+            <rdf:Description rdf:about="Property"/>
+          </owl:unionOf>
+        </owl:Class>
+      </owl:allValuesFrom>
+      <owl:onProperty rdf:resource="hasMeterReadingType"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="Measurement"/>
+      <owl:onProperty rdf:resource="hasMeterReading"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Function"/>
+  <rdfs:label xml:lang="en">Metering function</rdfs:label>
+  <rdfs:comment xml:lang="en">A function that allows to get data from a meter, such as current meter reading or instantaneous demand</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="LightSwitch">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="SwitchOnService"/>
+      <owl:onProperty rdf:resource="offers"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="Light"/>
+      <owl:onProperty rdf:resource="controlsProperty"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="OnOffState"/>
+      <owl:onProperty rdf:resource="hasState"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="OnOffFunction"/>
+      <owl:onProperty rdf:resource="hasFunction"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Switch"/>
+  <rdfs:label xml:lang="en">Light switch</rdfs:label>
+  <rdfs:comment xml:lang="en">A switch that performs the saref:OnOffFunction, controls the property saref:Light, and can be found in the state saref:OnOffState. It can offer a switch on service. A saref:LightSwitch is typically used to accomplish saref:Lighting.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="SwitchOnService">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="OnOffFunction"/>
+      <owl:onProperty rdf:resource="represents"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="LightSwitch"/>
+      <owl:onProperty rdf:resource="isOfferedBy"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Service"/>
+  <rdfs:label xml:lang="en">Switch on service</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of service that represents an on/off function to the network</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Light">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Light</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property related to some measurements that are characterized by a certain value that is measured in a illuminance unit (lux)</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OnOffState">
+  <rdfs:subClassOf rdf:resource="State"/>
+  <rdfs:label xml:lang="en">On off state</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of state</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="TemperatureUnit">
+  <rdfs:subClassOf rdf:resource="UnitOfMeasure"/>
+  <rdfs:label xml:lang="en">Temperature unit</rdfs:label>
+  <rdfs:comment xml:lang="en">The unit of measure for temperature</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OpenCloseFunction">
+  <rdfs:subClassOf rdf:resource="ActuatingFunction"/>
+  <rdfs:label xml:lang="en">Open close function</rdfs:label>
+  <rdfs:comment xml:lang="en">An actuating function that allows to open and close a device</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="SetRelativeLevelCommand">
+  <rdfs:subClassOf rdf:resource="SetLevelCommand"/>
+  <rdfs:label xml:lang="en">Set relative level command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of set level command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="SetLevelCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="LevelControlFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="MultiLevelState"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Set level command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="PauseCommand">
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Pause command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="DoorSwitch">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="OpenCloseState"/>
+      <owl:onProperty rdf:resource="hasState"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="OpenCloseFunction"/>
+      <owl:onProperty rdf:resource="hasFunction"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Switch"/>
+  <rdfs:label xml:lang="en">Door switch</rdfs:label>
+  <rdfs:comment xml:lang="en">A switch that performs the saref:OpenCloseFunction, is used for controlling a door, and can be found in the state saref:OpenCloseState. A saref:DoorSwitch is typically used to accomplish saref:Safety.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="StartCommand">
+  <owl:disjointWith rdf:resource="StopCommand"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="StartStopFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="StartStopState"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Start command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="StopCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="StartStopFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="StartStopState"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Stop command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="StartStopFunction">
+  <rdfs:subClassOf rdf:resource="ActuatingFunction"/>
+  <rdfs:label xml:lang="en">Start stop function</rdfs:label>
+  <rdfs:comment xml:lang="en">An actuating function that allows to start and stop a device</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="PressureUnit">
+  <rdfs:subClassOf rdf:resource="UnitOfMeasure"/>
+  <rdfs:label xml:lang="en">Pressure unit</rdfs:label>
+  <rdfs:comment xml:lang="en">The unit of measure for pressure</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="StepDownCommand">
+  <owl:disjointWith rdf:resource="StepUpCommand"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="LevelControlFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="MultiLevelState"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Step down command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="StepUpCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="LevelControlFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="MultiLevelState"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Step up command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="SetAbsoluteLevelCommand">
+  <rdfs:subClassOf rdf:resource="SetLevelCommand"/>
+  <rdfs:label xml:lang="en">Set absolute level command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of set level command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Temperature">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Temperature</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property related to some measurements that are characterized by a certain value that is measured in a temperature unit (degree_Celsius, degree_Fahrenheit, or degree_kelvin)</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Task">
+  <rdfs:label xml:lang="en">Task</rdfs:label>
+  <rdfs:comment xml:lang="en">The goal for which a device is designed (from a user perspective). For example, a washing machine is designed for the task of washing. We propose here a list of tasks that are relevant for the purpose of SAREF, but this list can be extended. Tasks can be accomplished by devices (saref:isAccomplishedBy).</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="TemperatureSensor">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="Temperature"/>
+      <owl:onProperty rdf:resource="measuresProperty"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="SensingFunction"/>
+      <owl:onProperty rdf:resource="hasFunction"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Sensor"/>
+  <rdfs:label xml:lang="en">Temperature sensor</rdfs:label>
+  <rdfs:comment xml:lang="en">A sensor that is used for the purpose of sensing a property of type saref:Temperature. A saref:TemperatureSensor is typically used to saref:accomplish saref:Comfort.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Service">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onClass rdf:resource="Function"/>
+      <owl:onProperty rdf:resource="represents"/>
+      <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onClass rdf:resource="Device"/>
+      <owl:onProperty rdf:resource="isOfferedBy"/>
+      <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:label xml:lang="en">Service</rdfs:label>
+  <rdfs:comment xml:lang="en">A service is a representation of a function to a network that makes the function discoverable, registerable, remotely controllable by other devices in the network. A service can represent one or more functions. A Service is offered by a device that wants (a certain set of) its function(s) to be discoverable, registerable, remotely controllable by other devices in the network. A Service must specify the device that is offering the service and the function(s) to be represented.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Motion">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Motion</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property related to some measurements that are characterized by a certain value that is measured in a unit of measure for motion</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="HVAC">
+  <rdfs:subClassOf rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">HVAC</rdfs:label>
+  <rdfs:comment xml:lang="en">Heating, Ventilation and Air Conditioning (HVAC) device that provides indoor environmental comfort. A saref:HVAC is typically used to accomplish saref:Comfort.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OnCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="OnOffFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="OnOffState"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">On command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OpenCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="OpenCloseFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="OpenCloseState"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Open command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Appliance">
+  <rdfs:subClassOf rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">Appliance</rdfs:label>
+  <rdfs:comment xml:lang="en">An electrical/mechanical machine that accomplish some household functions, such as cleaning or cooking</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Meter">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="MeteringFunction"/>
+      <owl:onProperty rdf:resource="hasFunction"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Device"/>
+  <rdfs:label xml:lang="en">Meter</rdfs:label>
+  <rdfs:comment xml:lang="en">A device built to accurately detect and display a quantity in a form readable by a human being. Further, a device of category saref:Meter that performs a saref:MeteringFunction.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="GetMeterHistoryCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="MeteringFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="GetCommand"/>
+  <rdfs:label xml:lang="en">Get meter history command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of get command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="NotifyCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="EventFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Notify command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="CloseCommand">
+  <owl:disjointWith rdf:resource="OpenCommand"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="OpenCloseFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="OpenCloseState"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Close command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="GetMeterDataCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="MeteringFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="GetCommand"/>
+  <rdfs:label xml:lang="en">Get meter data command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of get command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OffState">
+  <rdfs:subClassOf rdf:resource="OnOffState"/>
+  <rdfs:label xml:lang="en">Off state</rdfs:label>
+  <rdfs:comment xml:lang="en">The state of a device that is Off</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Pressure">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Pressure</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property related to some measurements that are characterized by a certain value that is measured in a pressure unit (bar or pascal)</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="PowerUnit">
+  <rdfs:subClassOf rdf:resource="UnitOfMeasure"/>
+  <rdfs:label xml:lang="en">Power unit</rdfs:label>
+  <rdfs:comment xml:lang="en">The unit of measure for power</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Coal">
+  <rdfs:subClassOf rdf:resource="Commodity"/>
+  <rdfs:label xml:lang="en">Coal</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of commodity</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="Humidity">
+  <rdfs:subClassOf rdf:resource="Property"/>
+  <rdfs:label xml:lang="en">Humidity</rdfs:label>
+  <rdfs:comment xml:lang="en">A saref:Property related to some measurements that are characterized by a certain value that is measured in a humidity unit</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OnState">
+  <rdfs:subClassOf rdf:resource="OnOffState"/>
+  <rdfs:label xml:lang="en">On state</rdfs:label>
+  <rdfs:comment xml:lang="en">The state of a device that is On</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="GetCurrentMeterValueCommand">
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="MeteringFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="GetCommand"/>
+  <rdfs:label xml:lang="en">Get current meter value command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of get command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="StartState">
+  <rdfs:subClassOf rdf:resource="StartStopState"/>
+  <rdfs:label xml:lang="en">Start state</rdfs:label>
+  <rdfs:comment xml:lang="en">The state of a device that is STARTED</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OffCommand">
+  <owl:disjointWith rdf:resource="OnCommand"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:allValuesFrom rdf:resource="OnOffFunction"/>
+      <owl:onProperty rdf:resource="isCommandOf"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:someValuesFrom rdf:resource="OnOffState"/>
+      <owl:onProperty rdf:resource="actsUpon"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf rdf:resource="Command"/>
+  <rdfs:label xml:lang="en">Off command</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of command</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="OpenState">
+  <rdfs:subClassOf rdf:resource="OpenCloseState"/>
+  <rdfs:label xml:lang="en">Open state</rdfs:label>
+  <rdfs:comment xml:lang="en">The state of a device that is OPEN </rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="solar_power_plant">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="v213532_rawdata_10m_2018_small">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="wind_power_plant">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<Task rdf:about="Drying">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">Drying</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+<Task rdf:about="EnergyEfficiency">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">EnergyEfficiency</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+<Task rdf:about="MeterReading">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">Meter reading</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+<Task rdf:about="Washing">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">Washing</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+<Task rdf:about="Cleaning">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">Cleaning</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+<Task rdf:about="Entertainment">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">Entertainment</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+<Task rdf:about="Comfort">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">Comfort</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+<Task rdf:about="WellBeing">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">WellBeing</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+<Task rdf:about="Safety">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">Safety</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+<Task rdf:about="Lighting">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <rdfs:label xml:lang="en">Lighting</rdfs:label>
+  <rdfs:comment xml:lang="en">A type of task for which a device is designed</rdfs:comment>
+</Task>
+
+
+</rdf:RDF>

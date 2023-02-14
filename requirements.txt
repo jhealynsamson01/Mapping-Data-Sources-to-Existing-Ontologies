@@ -1,0 +1,11 @@
+owlready2==0.39
+sentence-transformers
+neo4j-driver==5.2.0
+simpledbf==0.2.6
+pysimplegui
+mysql-connector-python==8.0.31
+simpledbf==0.2.6
+pandas==1.5.1
+torch==1.13
+Cython
+rdflib
